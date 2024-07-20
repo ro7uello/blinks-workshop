@@ -19,7 +19,7 @@ export const transferSolTransaction = async (params: TransferSolTransactionParam
     const minimumBalance = await connection.getMinimumBalanceForRentExemption(
         0, // note: simple accounts that just store native SOL have `0` bytes of data
     );
-    if (amount * LAMPORTS_PER_SOL < minimumBalance) {
+    if (amount * LAMPORTS_PER_SOL <= minimumBalance) {
         throw `account may not be rent exempt: ${toPubkey.toBase58()}`;
     }
 

@@ -29,27 +29,39 @@ export const GET = async (req: Request) => {
 export const OPTIONS = GET;
 
 export const POST = async (req: Request) => {
-    const body: ActionPostRequest = await req.json();
+    try {
+        // Parse JSON data from request body
+        const body: ActionPostRequest = await req.json();
 
-    // Check the query parameter to determine which president was voted for
-    const president = req.url.includes('president=PresidentA') ? 'President A' : 'President B';
+        // Perform necessary operations with body data
+        const transaction = await transferSolTransaction({ from: body.account, amount: 0 });
 
-    // Log the vote
-    console.log(`User voted for ${president}`);
+        const payload: ActionPostResponse = await createPostResponse({
+            fields: {
+                transaction,
+                message: `Your vote is submitted!`,
+            },
+        });
 
-    // Perform the transaction (transferSolTransaction)
-    const transaction = await transferSolTransaction({ from: body.account, amount: 0 });
+        return Response.json(payload, {
+            headers: ACTIONS_CORS_HEADERS,
+        });
+    } catch (error) {
+        console.error('Error processing request:', error);
 
-    // Create response payload
-    const payload: ActionPostResponse = await createPostResponse({
-        fields: {
-            transaction,
-            message: `Your vote for ${president} is submitted!`,
-        },
-    });
-
-    // Send response with CORS headers
-    return Response.json(payload, {
-        headers: ACTIONS_CORS_HEADERS,
-    });
+        // Handle specific error scenarios
+        if (error instanceof SyntaxError) {
+            // JSON parsing error
+            return Response.json({ error: 'Invalid JSON input' }, {
+                status: 400, // Bad Request status code
+                headers: ACTIONS_CORS_HEADERS,
+            });
+        } else {
+            // General server error
+            return Response.json({ error: 'Unexpected error processing request' }, {
+                status: 500, // Internal Server Error status code
+                headers: ACTIONS_CORS_HEADERS,
+            });
+        }
+    }
 };
