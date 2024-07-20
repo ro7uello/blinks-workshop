@@ -15,49 +15,42 @@ export const GET = async (req: Request) => {
                 },
                 {
                     label: "President B",
-                    href: "/api/actions/vote?president=PresidentB"
+                    href: "/api/actions/vote?president=PresidentB",
                 }
             ]
         }
     };
+
+    // Adding a console.log statement
+    console.log("GET request received:", req.url);
 
     return Response.json(payload, {
         headers: ACTIONS_CORS_HEADERS,
     });
 };
 
+
 export const OPTIONS = GET;
 
 export const POST = async (req: Request) => {
-    try {
-        const body: ActionPostRequest = await req.json();
-        const transaction = await transferSolTransaction({ from: body.account, amount: 0 });
+    const body: ActionPostRequest = await req.json();
+    
+    // Logging the incoming POST request body
+    console.log("POST request received. Body:", body);
+    
+    // Simulating a transaction (functionality not fully shown)
+    const transaction = await transferSolTransaction({ from: body.account, amount: 0 });
 
-        const payload: ActionPostResponse = await createPostResponse({
-            fields: {
-                transaction,
-                message: `Your vote is submitted!`,
-            },
-        });
-        console.log("pasok to");
-        return Response.json(payload, {
-            headers: ACTIONS_CORS_HEADERS,
-        });
-    } catch (error) {
-        console.error('Error processing request:', error);
+    // Creating a response payload
+    const payload: ActionPostResponse = await createPostResponse({
+        fields: {
+            transaction,
+            message: `Your vote is submitted!`,
+        },
+    });
 
-        if (error instanceof SyntaxError) {
-            console.log("invalid");
-            return Response.json({ error: 'Invalid JSON input' }, {
-                status: 400,
-                headers: ACTIONS_CORS_HEADERS,
-            });
-        } else {
-            console.log("error dito");
-            return Response.json({ error: 'Unexpected error processing request' }, {
-                status: 500,
-                headers: ACTIONS_CORS_HEADERS,
-            });
-        }
-    }
+    // Returning the response with CORS headers
+    return Response.json(payload, {
+        headers: ACTIONS_CORS_HEADERS,
+    });
 };
