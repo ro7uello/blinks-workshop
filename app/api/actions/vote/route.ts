@@ -6,16 +6,16 @@ export const GET = async (req: Request) => {
         title: "VOTE FOR YOUR PRESIDENT",
         icon: "https://i.imgur.com/6FS0nIp.jpeg",
         description: "Vote for your President",
-        label: "President A",
+        label: "vote",
         links: {
             actions: [
                 {
                     label: "President A",
-                    href: "POST"
+                    href: `${POST}`
                 },
                 {
                     label: "President B",
-                    href: "POST"
+                    href: `${POST}`
                 }
             ]
         }
