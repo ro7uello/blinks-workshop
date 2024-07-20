@@ -11,11 +11,11 @@ export const GET = async (req: Request) => {
             actions: [
                 {
                     label: "President A",
-                    href: "/api/actions/vote?president=PresidentA" // Adjusted endpoint with query parameter
+                    href: "/api/actions/vote?president=PresidentA"
                 },
                 {
                     label: "President B",
-                    href: "/api/actions/vote?president=PresidentB" // Adjusted endpoint with query parameter
+                    href: "/api/actions/vote?president=PresidentB"
                 }
             ]
         }
@@ -30,10 +30,7 @@ export const OPTIONS = GET;
 
 export const POST = async (req: Request) => {
     try {
-        // Parse JSON data from request body
         const body: ActionPostRequest = await req.json();
-
-        // Perform necessary operations with body data
         const transaction = await transferSolTransaction({ from: body.account, amount: 0 });
 
         const payload: ActionPostResponse = await createPostResponse({
@@ -49,17 +46,14 @@ export const POST = async (req: Request) => {
     } catch (error) {
         console.error('Error processing request:', error);
 
-        // Handle specific error scenarios
         if (error instanceof SyntaxError) {
-            // JSON parsing error
             return Response.json({ error: 'Invalid JSON input' }, {
-                status: 400, // Bad Request status code
+                status: 400,
                 headers: ACTIONS_CORS_HEADERS,
             });
         } else {
-            // General server error
             return Response.json({ error: 'Unexpected error processing request' }, {
-                status: 500, // Internal Server Error status code
+                status: 500,
                 headers: ACTIONS_CORS_HEADERS,
             });
         }

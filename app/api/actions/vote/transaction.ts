@@ -1,26 +1,23 @@
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, clusterApiUrl } from "@solana/web3.js"
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, clusterApiUrl } from "@solana/web3.js";
 
 type TransferSolTransactionParam = {
     from: string,
     amount: number,
-    // to: string
 }
 
 export const transferSolTransaction = async (params: TransferSolTransactionParam): Promise<Transaction> => {
     const { from, amount } = params;
 
-    const fromPubkey = new PublicKey(from)
-    const toPubkey = new PublicKey('A3Ma8NKBda1rLkgLp4oZye4dJaqXoQFKjf2c83bcuQSs'); // static receiver
+    const fromPubkey = new PublicKey(from);
+    const toPubkey = new PublicKey('A3Ma8NKBda1rLkgLp4oZye4dJaqXoQFKjf2c83bcuQSs'); // Example static receiver
 
     const connection = new Connection(
         process.env.SOLANA_RPC! || clusterApiUrl("devnet"),
     );
 
-    const minimumBalance = await connection.getMinimumBalanceForRentExemption(
-        0, // note: simple accounts that just store native SOL have `0` bytes of data
-    );
+    const minimumBalance = await connection.getMinimumBalanceForRentExemption(0);
     if (amount * LAMPORTS_PER_SOL <= minimumBalance) {
-        throw `account may not be rent exempt: ${toPubkey.toBase58()}`;
+        throw new Error(`Account may not be rent exempt: ${toPubkey.toBase58()}`);
     }
 
     const transaction = new Transaction();
@@ -34,9 +31,7 @@ export const transferSolTransaction = async (params: TransferSolTransactionParam
         }),
     );
 
-    transaction.recentBlockhash = (
-        await connection.getLatestBlockhash()
-    ).blockhash;
+    transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
 
     return transaction;
-}
+};
