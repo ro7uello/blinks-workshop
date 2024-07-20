@@ -11,11 +11,11 @@ export const GET = async (req: Request) => {
             actions: [
                 {
                     label: "President A",
-                    href: "/api/actions/vote?president=PresidentA"
+                    href: "POST"
                 },
                 {
                     label: "President B",
-                    href: "/api/actions/vote?president=PresidentB",
+                    href: "POST"
                 }
             ]
         }
