@@ -1,7 +1,7 @@
 import { ACTIONS_CORS_HEADERS, ActionGetResponse, ActionPostRequest, ActionPostResponse, createPostResponse } from "@solana/actions";
 import { transferSolTransaction } from "./transaction";
 
-export const GET = async (req: any) => { // Assuming `req` is of type `Request` or similar
+export const GET = async (req: Request) => { // Assuming `req` is of type `Request` or similar
     const payload: ActionGetResponse = {
         title: "VOTE FOR YOUR PRESIDENT",
         icon: "https://i.imgur.com/6FS0nIp.jpeg",
@@ -11,11 +11,11 @@ export const GET = async (req: any) => { // Assuming `req` is of type `Request` 
             actions: [
                 {
                     label: "President A",
-                    href: "/api/actions/vote?president=PresidentA"
+                    href: "https://blinks-workshop-one.vercel.app/api/actions/vote?president=PresidentA"
                 },
                 {
                     label: "President B",
-                    href: "/api/actions/vote?president=PresidentB"
+                    href: "https://blinks-workshop-one.vercel.app/api/actions/vote?president=PresidentB"
                 }
             ]
         }
@@ -32,7 +32,7 @@ export const GET = async (req: any) => { // Assuming `req` is of type `Request` 
 
 export const OPTIONS = GET; // OPTIONS method mirrors the GET method
 
-export const POST = async (req: any) => { // Assuming `req` is of type `Request` or similar
+export const POST = async (req: Request) => { // Assuming `req` is of type `Request` or similar
   
         const body: ActionPostRequest = await req.json();
 
