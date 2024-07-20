@@ -39,7 +39,7 @@ export const POST = async (req: Request) => {
                 message: `Your vote is submitted!`,
             },
         });
-
+        console.log("pasok to");
         return Response.json(payload, {
             headers: ACTIONS_CORS_HEADERS,
         });
@@ -47,11 +47,13 @@ export const POST = async (req: Request) => {
         console.error('Error processing request:', error);
 
         if (error instanceof SyntaxError) {
+            console.log("invalid");
             return Response.json({ error: 'Invalid JSON input' }, {
                 status: 400,
                 headers: ACTIONS_CORS_HEADERS,
             });
         } else {
+            console.log("error dito");
             return Response.json({ error: 'Unexpected error processing request' }, {
                 status: 500,
                 headers: ACTIONS_CORS_HEADERS,
