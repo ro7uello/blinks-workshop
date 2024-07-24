@@ -5,17 +5,17 @@ export const GET = async () => {
     rules: [
       {
         pathPattern: "/",
-        apiPath: "/api/actions/transfer-sol", // Default action path
+        apiPath: "/api/actions/vote", // Default action path
       }
-      // ,
-      // {
-      //   pathPattern: "/",
-      //   apiPath: "/api/actions/vote/president-a", // Endpoint for voting President A
-      // },
-      // {
-      //   pathPattern: "/",
-      //   apiPath: "/api/actions/vote/president-b", // Endpoint for voting President B
-      // },
+      ,
+      {
+        pathPattern: "/",
+        apiPath: "/api/actions/vote/president-a", // Endpoint for voting President A
+      },
+      {
+        pathPattern: "/",
+        apiPath: "/api/actions/vote/president-b", // Endpoint for voting President B
+      },
     ],
   };
 
