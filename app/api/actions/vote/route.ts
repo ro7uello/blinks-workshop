@@ -3,8 +3,8 @@ import { transferSolTransaction } from "./transaction";
 
 export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
-        icon: "https://i.imgur.com/6FS0nIp.jpeg",
         title: "VOTE FOR YOUR PRESIDENT",
+        icon: "https://i.imgur.com/6FS0nIp.jpeg",
         description: "Vote for your President",
         label: "vote",
         links: {
