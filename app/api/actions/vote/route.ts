@@ -1,5 +1,5 @@
 import { ACTIONS_CORS_HEADERS, ActionGetResponse, ActionPostRequest, ActionPostResponse, createPostResponse } from "@solana/actions";
-import { vote } from "./transaction";
+import { transferSolTransaction } from "./transaction";
 
 export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
@@ -51,7 +51,7 @@ export const POST = async (req: Request) => {
     }
 
     // Simulating a transaction (functionality not fully shown)
-    const transaction = await vote({ from: body.account, amount });
+    const transaction = await transferSolTransaction({ from: body.account, amount });
 
     // Creating a response payload
     const payload: ActionPostResponse = await createPostResponse({
