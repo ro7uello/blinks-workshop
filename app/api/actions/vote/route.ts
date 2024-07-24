@@ -1,7 +1,7 @@
 import { ACTIONS_CORS_HEADERS, ActionGetResponse, ActionPostRequest, ActionPostResponse, createPostResponse } from "@solana/actions";
 import { vote } from "./transaction";
 
-export const GET = async (req: Request) => { // Assuming `req` is of type `Request` or similar
+export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
         icon: "https://i.imgur.com/6FS0nIp.jpeg",
         title: "VOTE FOR YOUR PRESIDENT",
@@ -9,13 +9,13 @@ export const GET = async (req: Request) => { // Assuming `req` is of type `Reque
         label: "vote",
         links: {
             actions: [
-                { //trial
+                {
                     label: "President A",
-                    href: "api/jupiter/swap/USDC-SOL/10"
+                    href: "/api/actions/vote/president-a" // Endpoint for voting President A
                 },
                 {
                     label: "President B",
-                    href: "api/jupiter/swap/USDC-SOL/100"
+                    href: "/api/actions/vote/president-b" // Endpoint for voting President B
                 }
             ]
         }
@@ -32,26 +32,37 @@ export const GET = async (req: Request) => { // Assuming `req` is of type `Reque
 
 export const OPTIONS = GET; // OPTIONS method mirrors the GET method
 
-export const POST = async (req: Request) => { // Assuming `req` is of type `Request` or similar
-  
-        const body: ActionPostRequest = await req.json();
+export const POST = async (req: Request) => {
+    const body: ActionPostRequest = await req.json();
 
-        // Logging the incoming POST request body
-        console.log("POST request received. Body:", body);
+    let amount = 0;
 
-        // Simulating a transaction (functionality not fully shown)
-        const transaction = await vote({ from: body.account, amount: 0 });
+    // Determine the amount based on the label received in the request body
+    if (body.account === "President A") {
+        // Log the vote in the console
+        console.log(`User voted for President A`);
+    } else if (body.account === "President B") {
+        // Log the vote in the console
+        console.log(`User voted for President B`);
+    } else {
+        // Handle error or default case
+        amount = 0; // Default amount, if necessary
+        console.log(`Invalid vote option`);
+    }
 
-        // Creating a response payload
-        const payload: ActionPostResponse = await createPostResponse({
-            fields: {
-                transaction,
-                message: `Your vote is submitted!`,
-            },
-        });
+    // Simulating a transaction (functionality not fully shown)
+    const transaction = await vote({ from: body.account, amount });
 
-        // Returning the response with the payload and CORS headers
-        return Response.json(payload, {
-            headers: ACTIONS_CORS_HEADERS,
+    // Creating a response payload
+    const payload: ActionPostResponse = await createPostResponse({
+        fields: {
+            transaction,
+            message: `Your vote for ${body.account} is submitted!`,
+        },
+    });
+
+    // Returning the response with the payload and CORS headers
+    return Response.json(payload, {
+        headers: ACTIONS_CORS_HEADERS,
     });
 };
