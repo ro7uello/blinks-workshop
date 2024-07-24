@@ -3,16 +3,19 @@ import { ACTIONS_CORS_HEADERS, ActionsJson } from "@solana/actions";
 export const GET = async () => {
   const payload: ActionsJson = {
     rules: [
-      // map all root level routes to an action
       {
         pathPattern: "/",
-        apiPath: "/api/actions/vote",
-      },
-      // idempotent rule as the fallback
-      {
-        pathPattern: "/api/actions/**",
-        apiPath: "/api/actions/**",
-      },
+        apiPath: "/api/actions/transfer-sol", // Default action path
+      }
+      // ,
+      // {
+      //   pathPattern: "/",
+      //   apiPath: "/api/actions/vote/president-a", // Endpoint for voting President A
+      // },
+      // {
+      //   pathPattern: "/",
+      //   apiPath: "/api/actions/vote/president-b", // Endpoint for voting President B
+      // },
     ],
   };
 
@@ -21,6 +24,5 @@ export const GET = async () => {
   });
 };
 
-// DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD
-// THIS WILL ENSURE CORS WORKS FOR BLINKS
+// OPTIONS method mirrors the GET method for CORS compatibility
 export const OPTIONS = GET;
